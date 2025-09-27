@@ -1,0 +1,41 @@
+---
+description: UI Component Patterns and Common Pitfalls
+globs: ["**/*.tsx", "**/*.ts"]
+alwaysApply: true
+---
+
+# UI Component Patterns
+
+## shadcn/ui Focus Override Pattern
+
+When customizing shadcn/ui components with custom focus states:
+
+- Always neutralize BOTH `focus:` AND `focus-visible:` styles
+- Use `focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0`
+- Apply custom focus to parent container using `focus-within:`
+
+## Container Simplification
+
+- Prefer single containers over nested divs
+- Combine positioning and styling classes on same element
+- Only add containers when absolutely necessary
+
+## Tailwind Group Utilities
+
+- `group` is for styling descendants based on parent state
+- `group-focus-within:` triggers when child elements receive focus
+- Don't apply `group` to same element you want to style
+
+## Common Focus State Mistakes
+
+- Don't fight UI library defaults - work with them
+- Use `focus-within:` for container focus effects
+- Always test focus behavior in browser
+- Remember that `focus:` and `focus-visible:` are different pseudo-classes
+
+## Design System Integration
+
+- Use design system color tokens from `:root` variables
+- Prefer `border-border` for default borders, `border-primary` for focus
+- Apply consistent spacing using 8px base unit
+- Test contrast ratios meet accessibility standards
