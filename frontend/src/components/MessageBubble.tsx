@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { ConnectionLostAlert } from "@/components/ConnectionLostAlert";
 import clsx from "clsx";
 
 interface MessageBubbleProps {
@@ -12,7 +13,6 @@ export function MessageBubble({ message, isUser, timestamp, ref }: MessageBubble
   const displayTime = timestamp || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
   
-
   const classes = {
     bubble : clsx("flex py-2 px-6", isUser ? "justify-end" : "justify-start"),
     card : clsx("max-w-[80%] p-3 sm:p-4 rounded-2xl", isUser ? "bg-primary text-primary-foreground border-primary rounded-br-sm" : "bg-card border-border rounded-bl-sm"),
@@ -20,6 +20,10 @@ export function MessageBubble({ message, isUser, timestamp, ref }: MessageBubble
     time : clsx("text-[10px] ml-2 align-baseline float-right", isUser ? "opacity-60 pt-1" : "text-muted-foreground pt-2"),
   }
 
+  if (message.includes("[Error: connection lost]")) {
+    return <ConnectionLostAlert ref={ref} />;
+  }
+  
   return (
       <div className={classes.bubble} ref={ref}>
         <Card className={classes.card}>
