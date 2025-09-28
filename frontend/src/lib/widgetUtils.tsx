@@ -1,6 +1,6 @@
 import React from 'react';
-import smContactWidgetComponent from '../smContactWidget';
-import mdContactWidgetComponent from '../mdContactWidget';
+import smContactWidget from '../components/widgets/smContactWidget';
+import mdContactWidget from '../components/widgets/mdContactWidget';
 import { mockContacts } from './mockContacts';
 
 export interface WidgetConfig {
@@ -48,14 +48,14 @@ export function renderWidget(config: WidgetConfig) {
 }
 
 // Widget Configuration Objects
-export const smContactWidget: WidgetConfig = {
+export const smContactWidgetConfig: WidgetConfig = {
   containerDiv: {
     className: "p-8",
     style: { backgroundColor: 'oklch(0.929 0.013 255.508)' }
   },
   layout: "small",
   mockData: mockContacts,
-  component: smContactWidgetComponent,
+  component: smContactWidget,
   componentProps: (contact, index) => ({
     name: contact.name,
     status: contact.status,
@@ -65,14 +65,14 @@ export const smContactWidget: WidgetConfig = {
   })
 };
 
-export const mdContactWidget: WidgetConfig = {
+export const mdContactWidgetConfig: WidgetConfig = {
   containerDiv: {
     className: "p-8",
     style: { backgroundColor: 'oklch(0.929 0.013 255.508)' }
   },
   layout: "medium",
   mockData: mockContacts,
-  component: mdContactWidgetComponent,
+  component: mdContactWidget,
   componentProps: (contact, index) => ({
     name: contact.name,
     status: contact.status,
@@ -87,21 +87,25 @@ export const mdContactWidget: WidgetConfig = {
 };
 
 // Add more widget configurations here as needed
-// Example:
-// export const mdContactWidget: WidgetConfig = {
+// 
+// Example for a large contact widget:
+// export const lgContactWidgetConfig: WidgetConfig = {
 //   containerDiv: {
 //     className: "p-4 min-h-screen",
 //     style: { backgroundColor: '#ffffff' }
 //   },
-//   layout: "medium",
+//   layout: "large",
 //   mockData: mockContacts,
-//   component: mdContactWidgetComponent,
+//   component: lgContactWidget, // Import from '../components/widgets/lgContactWidget'
 //   componentProps: (contact, index) => ({
 //     name: contact.name,
 //     status: contact.status,
 //     roleAndCompany: contact.roleAndCompany,
 //     profileImageUrl: contact.profileImageUrl,
-//     goalLinked: contact.goalLinked
+//     goalLinked: contact.goalLinked,
+//     // Add large-specific props here
+//     detailedInfo: contact.detailedInfo,
+//     notes: contact.notes
 //   }),
 //   maxItems: 1
 // };
