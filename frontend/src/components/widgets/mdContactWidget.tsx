@@ -1,4 +1,4 @@
-import { Target, Edit3, Calendar, Tag, Link } from "lucide-react";
+import { Target, Calendar, Tag, Link } from "lucide-react";
 
 type MediumContactWidgetProps = {
   name: string;

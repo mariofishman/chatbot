@@ -11,10 +11,22 @@ export default function App() {
   
   function onSend(userInput:string) {
     const userId = crypto.randomUUID();
-    setMessages((prev:Message[]) => [...prev, {id: userId, role: "user", content: userInput}]);
+    setMessages((prev:Message[]) => [...prev, {
+      id: userId, 
+      role: "user", 
+      content: userInput,
+      widget: {},
+      alert: {}
+    }]);
     
     const assistantId = crypto.randomUUID();
-    setMessages((prev:Message[]) => [...prev, {id: assistantId, role: "assistant", content: ""}]);
+    setMessages((prev:Message[]) => [...prev, {
+      id: assistantId, 
+      role: "assistant", 
+      content: "",
+      widget: {},
+      alert: {}
+    }]);
 
     setActiveMessageId(assistantId);
   }

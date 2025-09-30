@@ -13,8 +13,7 @@ export function ChatArea(props:any) {
   const messagesElements = props.messages.map((message: Message, index: number)=> {
     return (
       <MessageBubble  
-        message={message.content}
-        isUser={message.role === "user"}
+        message={message}
         ref={index === props.messages.length - 1 ? lastMessageRef : undefined}
         key={index}
       />

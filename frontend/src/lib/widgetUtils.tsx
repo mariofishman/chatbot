@@ -56,7 +56,7 @@ export const smContactWidgetConfig: WidgetConfig = {
   layout: "small",
   mockData: mockContacts,
   component: smContactWidget,
-  componentProps: (contact, index) => ({
+  componentProps: (contact) => ({
     name: contact.name,
     status: contact.status,
     roleAndCompany: contact.roleAndCompany,
@@ -73,7 +73,7 @@ export const mdContactWidgetConfig: WidgetConfig = {
   layout: "medium",
   mockData: mockContacts,
   component: mdContactWidget,
-  componentProps: (contact, index) => ({
+  componentProps: (contact) => ({
     name: contact.name,
     status: contact.status,
     roleAndCompany: contact.roleAndCompany,
@@ -97,7 +97,7 @@ export const mdContactWidgetConfig: WidgetConfig = {
 //   layout: "large",
 //   mockData: mockContacts,
 //   component: lgContactWidget, // Import from '../components/widgets/lgContactWidget'
-//   componentProps: (contact, index) => ({
+//   componentProps: (contact) => ({
 //     name: contact.name,
 //     status: contact.status,
 //     roleAndCompany: contact.roleAndCompany,

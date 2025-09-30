@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, RotateCcw } from "lucide-react";
 
 interface ConnectionLostAlertProps {
-  ref?: React.RefObject<HTMLDivElement>;
+  ref?: React.RefObject<HTMLDivElement | null>;
 }
 
 export function ConnectionLostAlert({ ref }: ConnectionLostAlertProps) {
