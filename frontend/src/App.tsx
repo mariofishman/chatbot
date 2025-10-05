@@ -2,30 +2,33 @@ import { Layout } from "@/components/Layout";
 import { mockMessages } from "@/lib/mockMessages.ts";
 import type { Message } from "@/types/message";
 import { useState } from "react";
-import { useSSE } from "./hooks/useSSE";
+import { useSSE } from "./hooks/useSSE.ts";
 
 export default function App() {
   const [messages, setMessages] = useState<Message[]>(mockMessages);
   const [activeMessageId, setActiveMessageId] = useState<string | null>(null);
   useSSE(setMessages, setActiveMessageId, activeMessageId);
   
+  
   function onSend(userInput:string) {
     const userId = crypto.randomUUID();
     setMessages((prev:Message[]) => [...prev, {
       id: userId, 
-      role: "user", 
-      content: userInput,
-      widget: {},
-      alert: {}
+      role: "user",
+      sections: [
+        {
+          type: "text",
+          content: userInput,
+        }
+      ]
     }]);
     
     const assistantId = crypto.randomUUID();
     setMessages((prev:Message[]) => [...prev, {
       id: assistantId, 
       role: "assistant", 
-      content: "",
-      widget: {},
-      alert: {}
+      sections: [
+      ]
     }]);
 
     setActiveMessageId(assistantId);

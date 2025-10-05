@@ -1,8 +1,10 @@
 import React from 'react';
-import smContactWidget from '../components/widgets/smContactWidget';
-import mdContactWidget from '../components/widgets/mdContactWidget';
+import SmContactWidget from '../components/widgets/smContactWidget';
+import MdContactWidget from '../components/widgets/mdContactWidget';
 import { mockContacts } from './mockContacts';
+import type { Message } from '@/types/message';
 
+// Legacy WidgetConfig interface for preview mode (main.tsx)
 export interface WidgetConfig {
   containerDiv: {
     className: string;
@@ -15,6 +17,7 @@ export interface WidgetConfig {
   maxItems?: number;
 }
 
+// Legacy renderWidget function for preview mode (main.tsx)
 export function renderWidget(config: WidgetConfig) {
   const maxItems = config.maxItems || (config.layout === "small" ? config.mockData.length : 1);
   const itemsToRender = config.mockData.slice(0, maxItems);
@@ -47,7 +50,7 @@ export function renderWidget(config: WidgetConfig) {
   );
 }
 
-// Widget Configuration Objects
+// Legacy Widget Configuration Objects for preview mode (main.tsx)
 export const smContactWidgetConfig: WidgetConfig = {
   containerDiv: {
     className: "p-8",
@@ -55,7 +58,7 @@ export const smContactWidgetConfig: WidgetConfig = {
   },
   layout: "small",
   mockData: mockContacts,
-  component: smContactWidget,
+  component: SmContactWidget,
   componentProps: (contact) => ({
     name: contact.name,
     status: contact.status,
@@ -72,7 +75,7 @@ export const mdContactWidgetConfig: WidgetConfig = {
   },
   layout: "medium",
   mockData: mockContacts,
-  component: mdContactWidget,
+  component: MdContactWidget,
   componentProps: (contact) => ({
     name: contact.name,
     status: contact.status,
@@ -86,26 +89,60 @@ export const mdContactWidgetConfig: WidgetConfig = {
   maxItems: 1
 };
 
-// Add more widget configurations here as needed
-// 
-// Example for a large contact widget:
-// export const lgContactWidgetConfig: WidgetConfig = {
-//   containerDiv: {
-//     className: "p-4 min-h-screen",
-//     style: { backgroundColor: '#ffffff' }
-//   },
-//   layout: "large",
-//   mockData: mockContacts,
-//   component: lgContactWidget, // Import from '../components/widgets/lgContactWidget'
-//   componentProps: (contact) => ({
-//     name: contact.name,
-//     status: contact.status,
-//     roleAndCompany: contact.roleAndCompany,
-//     profileImageUrl: contact.profileImageUrl,
-//     goalLinked: contact.goalLinked,
-//     // Add large-specific props here
-//     detailedInfo: contact.detailedInfo,
-//     notes: contact.notes
-//   }),
-//   maxItems: 1
-// };
+
+// Widget mapping function for new SSE architecture
+export function renderWidgetFromMessage(message: Message): React.ReactElement | null {
+  // Get the first widget from the widgets array
+  const widget = message.widgets && message.widgets.length > 0 ? message.widgets[0] : null;
+  if (!widget) return null;
+  
+  const { objectType, size, data } = widget;
+  
+  if (!objectType || !size || !data || !Array.isArray(data) || data.length === 0) {
+    return null;
+  }
+
+  // Map objectType + size to widget component
+  const widgetKey = `${objectType}${size.charAt(0).toUpperCase() + size.slice(1)}`;
+  
+  // Render widgets based on size layout
+  if (size === "small") {
+    // Small widgets: 4-column grid
+    return (
+      <div className="grid grid-cols-4 gap-4">
+        {data.map((item, index) => {
+          switch (widgetKey) {
+            case 'contactSmall':
+              return <SmContactWidget key={index} {...item} />;
+            case 'taskSmall':
+              return <div key={index}>Task widgets not implemented yet</div>;
+            case 'goalSmall':
+              return <div key={index}>Goal widgets not implemented yet</div>;
+            default:
+              return <div key={index}>Unknown widget type</div>;
+          }
+        })}
+      </div>
+    );
+  } else {
+    // Medium, Large, etc.: stacked vertically
+    return (
+      <div className="space-y-4">
+        {data.map((item, index) => {
+          switch (widgetKey) {
+            case 'contactMedium':
+              return <MdContactWidget key={index} {...item} />;
+            case 'contactLarge':
+              return <div key={index}>Large contact widget not implemented yet</div>;
+            case 'contactExpandedSmall':
+              return <div key={index}>Expanded small contact widget not implemented yet</div>;
+            case 'contactExtraLarge':
+              return <div key={index}>Extra large contact widget not implemented yet</div>;
+            default:
+              return <div key={index}>Unknown widget type</div>;
+          }
+        })}
+      </div>
+    );
+  }
+}

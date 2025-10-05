@@ -1,56 +1,108 @@
 /**
- * Message type for chat system supporting text, widgets, and alerts
+ * SSE Message Envelope - structured JSON from backend
+ */
+export type SSEMessage = {
+  payload: {
+    // For type: "text"
+    token?: string,
+    
+    // For type: "object"
+    objectType?: "contact" | "task" | "goal",  // Extensible for future object types
+    size?: "small" | "expandedSmall" | "medium" | "large" | "extraLarge",  // Extensible for future sizes
+    data?: any,  // Object-specific data
+    
+    // For type: "alert"
+    alertType?: "error" | "warning" | "success" | "connectionLost",
+    message?: string,
+  };
+  meta: {
+    requestId: string,
+    timestamp?: string,
+    stream: boolean,
+  };
+};
+
+/**
+ * Message type for chat system supporting text, widgets, and alerts.
  * 
- * All messages have the same structure with conditional fields:
- * - Text messages: content populated, widget/alert empty
- * - Widget messages: widget populated, content/alert empty  
- * - Alert messages: alert populated, content/widget empty
+ * Each message has:
+ * - id: string
+ * - role: "user" | "assistant"
+ * - sections: array of MessageSection (see below)
  * 
- * @example Text message:
+ * MessageSection can be:
+ * - type: "text" with content
+ * - type: "widget" with widget object
+ * - type: "alert" with alert object
+ * 
+ * Examples:
+ * 
+ * // Text message
  * {
  *   id: "1",
- *   role: "assistant", 
- *   content: "Hello, here are your contacts",
- *   widget: {},
- *   alert: {}
+ *   role: "assistant",
+ *   sections: [
+ *     {
+ *       type: "text",
+ *       content: "Hello, here are your contacts"
+ *     }
+ *   ]
  * }
  * 
- * @example Widget message:
+ * // Widget message
  * {
  *   id: "2",
  *   role: "assistant",
- *   content: "",
- *   widget: {
- *     type: "smContactWidget",
- *     data: { name: "John Doe", status: "active", roleAndCompany: "Developer · TechCorp", profileImageUrl: "/src/assets/facePics/john.jpg", goalLinked: true }
- *   },
- *   alert: {}
+ *   sections: [
+ *     {
+ *       type: "widget",
+ *       widget: {
+ *         objectType: "contact",
+ *         size: "small",
+ *         data: {
+ *           name: "John Doe",
+ *           status: "active",
+ *           roleAndCompany: "Developer · TechCorp",
+ *           profileImageUrl: "/src/assets/facePics/john.jpg",
+ *           goalLinked: true
+ *         }
+ *       }
+ *     }
+ *   ]
  * }
  * 
- * @example Alert message:
+ * // Alert message
  * {
- *   id: "3", 
+ *   id: "3",
  *   role: "assistant",
- *   content: "",
- *   widget: {},
- *   alert: {
- *     type: "connectionLost",
- *     data: {}
- *   }
+ *   sections: [
+ *     {
+ *       type: "alert",
+ *       alert: {
+ *         alertType: "connectionLost",
+ *         message: "Connection lost"
+ *       }
+ *     }
+ *   ]
  * }
  */
 export type Message = {
   id: string;
   role: "user" | "assistant";
-  content: string;            // Text content - empty for widget/alert messages
-  widget: {                   // Widget data - empty object for text/alert messages
-    type?: "smContactWidget" | "mdContactWidget" | "lgContactWidget";
-    data?: any;               // Widget-specific data (contact info, etc.)
-  };
-  alert: {                    // Alert data - empty object for text/widget messages
-    type?: "connectionLost" | "error" | "warning" | "success";
-    data?: any;               // Alert-specific data
-  };
-  timestamp?: string;
+  sections: MessageSection[];
 };
-  
+
+export type MessageSection = | {
+  type: "text";
+  content?: string;
+} | {
+  type: "widget";
+  objectType?: "contact" | "task" | "goal";
+  size?: "small" | "expandedSmall" | "medium" | "large" | "extraLarge";
+  dataArray?:Array<any>;  // Array of object-specific data for concatenation
+} | {
+  type: "alert";
+  alertType?: "error" | "warning" | "success" | "connectionLost";
+  message?: string;
+  }
+;
