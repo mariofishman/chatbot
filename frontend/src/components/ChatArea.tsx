@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import {ConnectionLostAlert} from "@/components/ConnectionLostAlert";
 
 export function ChatArea(props:any) {
-  // console.log("ChatArea rendering with", props.messages.length, "messages");
 
   const lastMessageRef = useRef<HTMLDivElement>(null);
 
@@ -18,7 +17,6 @@ export function ChatArea(props:any) {
     const message = props.messages[messageIndex];
     for (let sectionIndex = 0; sectionIndex < message.sections.length; sectionIndex++) {
       const section = message.sections[sectionIndex];
-      // console.log(message.role, message.id, section.content);
       if (section.type === "text") {
         messagesElements.push(
          <MessageBubble  
@@ -28,25 +26,25 @@ export function ChatArea(props:any) {
             key={`${messageIndex}-${sectionIndex}`}
             />
           )
-        } else if (section.type === "widget") {
-          messagesElements.push(
-            <MessageWidget
-            dataArray={section.dataArray}
-            size={section.size}
-            objectType={section.objectType}
-            ref={messageIndex === props.messages.length - 1 ? lastMessageRef : undefined}
-            key={`${messageIndex}-${sectionIndex}`}
-            />
-          )
-        } 
-        else if (section.type === "alert") {
-          messagesElements.push(
-            <ConnectionLostAlert
-            ref={messageIndex === props.messages.length - 1 ? lastMessageRef : undefined}
-            key={`${messageIndex}-${sectionIndex}`}
-            />
-          )
-        } else {return null}
+      } else if (section.type === "widget") {
+        messagesElements.push(
+          <MessageWidget
+          dataArray={section.dataArray}
+          size={section.size}
+          objectType={section.objectType}
+          ref={messageIndex === props.messages.length - 1 ? lastMessageRef : undefined}
+          key={`${messageIndex}-${sectionIndex}`}
+          />
+        )
+      } 
+      else if (section.type === "alert") {
+        messagesElements.push(
+          <ConnectionLostAlert
+          ref={messageIndex === props.messages.length - 1 ? lastMessageRef : undefined}
+          key={`${messageIndex}-${sectionIndex}`}
+          />
+        )
+      } else {return null}
       }
     };
   

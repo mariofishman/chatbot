@@ -24,3 +24,27 @@ export const widgetMapping = {
   //   extraLarge: ExtraLgGoalWidget
   // }
 };
+
+export function getWidgetComponent(userInput: string) {
+  const matchedObject = Object.keys(widgetMapping).find(key =>
+    userInput.toLowerCase().includes(key)
+  );
+  if (!matchedObject) return null;
+  const matchedSize = Object.keys((widgetMapping as Record<string, any>)[matchedObject]).find(key =>
+    userInput.toLowerCase().includes(key)
+  );
+  if (!matchedSize) return null;
+  return {widget:(widgetMapping as Record<string, any>)[matchedObject][matchedSize],
+    objectType: matchedObject,
+    size: matchedSize
+  };
+}
+
+export function getNumberFromUserInput(userInput: string) {
+  const numberMatch = userInput.match(/\d+/);
+  if (numberMatch) {
+    const numberValue = Number(numberMatch[0]);
+    if (numberValue) return numberValue;
+  }
+  return null;
+}

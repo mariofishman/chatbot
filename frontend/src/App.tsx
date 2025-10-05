@@ -3,6 +3,8 @@ import { mockMessages } from "@/lib/mockMessages.ts";
 import type { Message } from "@/types/message";
 import { useState } from "react";
 import { useSSE } from "./hooks/useSSE.ts";
+import { getWidgetComponent, getNumberFromUserInput} from "@/lib/widgetMapping.ts";
+import { mockContacts } from "./lib/mockContacts.ts";
 
 export default function App() {
   const [messages, setMessages] = useState<Message[]>(mockMessages);
@@ -22,16 +24,43 @@ export default function App() {
         }
       ]
     }]);
-    
+
+    // NEW CODE IS: (REMOVE AFTER IMPLEMENTING BACKEND)
+    const {widget, objectType, size} = getWidgetComponent(userInput);
+    const number = getNumberFromUserInput(userInput);
+    let sections:any[] = [];
+    if (widget && number) {
+      sections = [{type: "widget", 
+                  objectType: objectType, 
+                  size: size, 
+                  dataArray: mockContacts.slice(0, number)}]
+    } else if (widget) {
+      sections = [{type: "widget", 
+                  objectType: objectType, 
+                  size: size, 
+                  dataArray: [mockContacts[0]]}]
+    } 
     const assistantId = crypto.randomUUID();
     setMessages((prev:Message[]) => [...prev, {
       id: assistantId, 
       role: "assistant", 
-      sections: [
-      ]
+      sections: sections,
     }]);
+  
+    if (sections.length === 0) {
+      setActiveMessageId(assistantId);
+    }
 
-    setActiveMessageId(assistantId);
+    // ORIGINAL code was (CHANGE AFTER IMPLEMENTING BACKEND):
+    // const assistantId = crypto.randomUUID();
+    // setMessages((prev:Message[]) => [...prev, {
+    //   id: assistantId, 
+    //   role: "assistant", 
+    //   sections: []
+    // }]);
+
+    // setActiveMessageId(assistantId);
+
   }
 
   return <Layout messages={messages} onSend={onSend} />;

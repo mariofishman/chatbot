@@ -8,7 +8,7 @@ interface MessageWidgetProps {
 }
 
 export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidgetProps) {
-  console.log("MessageWidget received:", { dataArray, size, objectType });
+  // console.log("MessageWidget received:", { dataArray, size, objectType });
 
   const MAXITEMS = 16;
   const WidgetComponent = widgetMapping[objectType]?.[size];
