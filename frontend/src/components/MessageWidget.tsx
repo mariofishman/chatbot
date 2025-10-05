@@ -25,7 +25,7 @@ export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidge
   if (size === "small") {
     // Small widgets: 4-column grid
     return (
-      <div className="p-8" style={{backgroundColor: 'oklch(0.929 0.013 255.508)' }} ref={ref}>
+      <div className="p-8 bg-background" ref={ref}>
       <div className="grid grid-cols-4 gap-4">
         {itemsToRender.map((item, index) => (
           <WidgetComponent key={index} {...item} />
@@ -36,7 +36,7 @@ export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidge
   } else if (size === "medium") {
     // Medium widgets: vertical stack
     return (
-      <div className="p-8 my-4" style={{backgroundColor: 'oklch(0.929 0.013 255.508)' }} ref={ref}>
+      <div className="p-8 my-4 bg-background" ref={ref}>
       <div className="w-full gap-4 flex flex-col">
         {dataArray.map((item, index) => (
           <WidgetComponent key={index} {...item} />

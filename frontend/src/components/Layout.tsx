@@ -6,7 +6,7 @@ export function Layout(props:any) {
   return (
     <div className="h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex flex-col min-h-0 w-full bg-input">
+      <main className="flex-1 flex flex-col min-h-0 w-full bg-background">
         <ChatArea messages={props.messages}/>
         <InputArea onSend={props.onSend}/>
       </main>
