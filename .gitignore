@@ -1,8 +1,20 @@
 # Node
 node_modules/
 dist/
+dist-ssr/
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Python
+venv/
 __pycache__/
 *.pyc
 .env
@@ -10,9 +22,16 @@ __pycache__/
 # OS / Editor
 .DS_Store
 .vscode/
+!.vscode/extensions.json
 .cursor/
 *.code-workspace
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-#Token
+# Token
 github_token.txt
 DEPRECATED*
