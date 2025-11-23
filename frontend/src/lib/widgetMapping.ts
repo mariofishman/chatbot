@@ -1,12 +1,14 @@
-import SmContactWidget from '@/components/widgets/smContactWidget';
-import MdContactWidget from '@/components/widgets/mdContactWidget';
+import AvatarWidget from '@/components/widgets/avatarWidget';
+import SmContactWidget from '@/components/widgets/SmContactWidget.tsx';
+import MdContactWidget from '@/components/widgets/MdContactWidget.tsx';
+import LgContactWidget from '@/components/widgets/LgContactWidget.tsx';
 
 export const widgetMapping = {
   contact: {
-    small: SmContactWidget,
+    avatar: AvatarWidget,
+    small: SmContactWidget,  
     medium: MdContactWidget,
-    // large: LgContactWidget,
-    // expandedSmall: ExpandedSmContactWidget,
+    large: LgContactWidget,
     // extraLarge: ExtraLgContactWidget
   },
   // task: {
@@ -25,6 +27,7 @@ export const widgetMapping = {
   // }
 };
 
+// Example: getWidgetComponent("show small contact widget") returns {widget: SmContactWidget, objectType: 'contact', size: 'small'}
 export function getWidgetComponent(userInput: string) {
   const matchedObject = Object.keys(widgetMapping).find(key =>
     userInput.toLowerCase().includes(key)
@@ -40,6 +43,7 @@ export function getWidgetComponent(userInput: string) {
   };
 }
 
+// Example: getNumberFromUserInput("show 3 contact widgets") returns 3
 export function getNumberFromUserInput(userInput: string) {
   const numberMatch = userInput.match(/\d+/);
   if (numberMatch) {

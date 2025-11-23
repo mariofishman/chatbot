@@ -18,14 +18,13 @@ export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidge
     return null;
   }
 
-  const maxItems = MAXITEMS || (size === "small" ? dataArray.length : 1);
-  const itemsToRender = dataArray.slice(0, maxItems);
+  const itemsToRender = dataArray.slice(0, MAXITEMS);
 
   // Render based on size layout
-  if (size === "small") {
-    // Small widgets: 4-column grid
+  if (size === "avatar") {
+    // Avatar widgets: 4-column grid
     return (
-      <div className="p-8 bg-background" ref={ref}>
+      <div className="p-8" ref={ref}>
       <div className="grid grid-cols-4 gap-4">
         {itemsToRender.map((item, index) => (
           <WidgetComponent key={index} {...item} />
@@ -33,31 +32,31 @@ export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidge
       </div>
       </div>
     );
+  } else if (size === "small") {
+    // Expanded small: 2x2 grid
+    return (
+      <div className="flex py-2 px-6 justify-center"> {/* bubble padding*/}
+        <div className="grid grid-cols-2 gap-8" ref={ref}>
+          {itemsToRender.map((item, index) => (
+            <WidgetComponent key={index} {...item} />
+          ))}
+        </div>
+      </div>
+    );
   } else if (size === "medium") {
     // Medium widgets: vertical stack
     return (
-      <div className="p-8 my-4 bg-background" ref={ref}>
-      <div className="w-full gap-4 flex flex-col">
-        {dataArray.map((item, index) => (
+      <div className="p-8 my-4 w-full gap-4 flex flex-col" ref={ref}>
+        {itemsToRender.map((item, index) => (
           <WidgetComponent key={index} {...item} />
         ))}
-      </div>
       </div>
     );
   } else if (size === "large") {
     // Large widgets: vertical stack with more spacing
     return (
-      <div className="space-y-6" ref={ref}>
-        {dataArray.map((item, index) => (
-          <WidgetComponent key={index} {...item} />
-        ))}
-      </div>
-    );
-  } else if (size === "expandedSmall") {
-    // Expanded small: 2x2 grid
-    return (
-      <div className="grid grid-cols-2 gap-4" ref={ref}>
-        {dataArray.map((item, index) => (
+      <div className="p-8 my-4 w-full gap-4 flex flex-col" ref={ref}>
+        {itemsToRender.map((item, index) => (
           <WidgetComponent key={index} {...item} />
         ))}
       </div>
@@ -66,7 +65,7 @@ export function MessageWidget({ dataArray, size, objectType, ref }: MessageWidge
     // Extra large: full width, single column
     return (
       <div className="space-y-8" ref={ref}>
-        {dataArray.map((item, index) => (
+        {itemsToRender.map((item, index) => (
           <WidgetComponent key={index} {...item} />
         ))}
       </div>

@@ -26,15 +26,20 @@ export default function App() {
     }]);
 
     // NEW CODE IS: (REMOVE AFTER IMPLEMENTING BACKEND)
-    const {widget, objectType, size} = getWidgetComponent(userInput);
+    // If the user input has a widget name and size and/or number of widgets it will return a message which in its 
+    // sections will have a widget section with the widget component, object type, size, and data array. 
+    const widgetResult = getWidgetComponent(userInput);
     const number = getNumberFromUserInput(userInput);
     let sections:any[] = [];
-    if (widget && number) {
+    
+    if (widgetResult && number) {
+      const {widget, objectType, size} = widgetResult;
       sections = [{type: "widget", 
                   objectType: objectType, 
                   size: size, 
                   dataArray: mockContacts.slice(0, number)}]
-    } else if (widget) {
+    } else if (widgetResult) {
+      const {widget, objectType, size} = widgetResult;
       sections = [{type: "widget", 
                   objectType: objectType, 
                   size: size, 
@@ -48,6 +53,7 @@ export default function App() {
     }]);
   
     if (sections.length === 0) {
+      console.log("sections.length === 0");
       setActiveMessageId(assistantId);
     }
 

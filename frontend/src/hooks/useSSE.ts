@@ -70,7 +70,7 @@ export function useSSE(setMessages: React.Dispatch<React.SetStateAction<Message[
             if (!activeMessageId) return;
 
             if (USE_MOCK) {
-                const messageSequence = [0,0,1,1,1,1,3,2,2,1,1,0,0]; // Example sequence: text, object, text, object2, alert, object
+                const messageSequence = [0,0,0]; // Example sequence: text, object, text, object2, alert, object
                 // Each entry: { event: "text" | "object" | "alert", data: SSEMessage }
                 const mockSSE = [
                     { event: "text", data: mockTextSSE },

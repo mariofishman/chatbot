@@ -12,10 +12,13 @@ export function MessageBubble({ content, role, ref }: TextMessageBubbleProps) {
   const isUser = role === "user";
 
   const classes = {
-    bubble : clsx("flex py-2 px-6", isUser ? "justify-end" : "justify-start"),
-    card : clsx("max-w-[80%] p-3 sm:p-4 rounded-2xl", isUser ? "bg-primary text-primary-foreground border-primary rounded-br-sm" : "bg-card border-border rounded-bl-sm"),
-    text : clsx("text-sm leading-relaxed whitespace-pre-wrap", !isUser && "text-card-foreground"),
-    time : clsx("text-xs ml-2 align-baseline float-right", isUser ? "opacity-60 pt-1" : "text-muted-foreground pt-2"),
+    bubble : clsx("flex py-2 px-5", isUser ? "justify-end" : "justify-start"),
+    card : clsx(
+      "px-3 py-3 rounded-2xl border-none shadow-none",
+      isUser ? "max-w-[80%] bg-background-bubble rounded-br-sm" : "max-w-[90%] border-none" 
+    ),
+    text : clsx("body-sm", isUser ? "text-text-secondary" : "text-text-primary"),
+    time : clsx("body-xs ml-2 relative top-1 float-right opacity-60 pt-1"),
   }
 
   return (
@@ -23,7 +26,7 @@ export function MessageBubble({ content, role, ref }: TextMessageBubbleProps) {
       <Card className={classes.card}>
         <p className={classes.text}>
           {content}
-          <span className={classes.time}>{displayTime}</span>
+          {isUser ? <span className={classes.time}>{displayTime}</span> : null}
         </p>
       </Card>
     </div>
