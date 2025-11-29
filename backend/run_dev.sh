@@ -1,3 +1,6 @@
+# To start the development server, run the following command in your terminal:
+# ./run_dev.sh
+
 #!/usr/bin/env bash
 
 source venv/Scripts/activate

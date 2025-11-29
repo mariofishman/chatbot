@@ -114,9 +114,9 @@ Example response:
 
 ## Environment Variables
 
-Environment variables are loaded from a local `.env` file (via `python-dotenv` in later steps).
+Environment variables are loaded automatically by **pydantic-settings**
 
-Example `.env` layout (see `.env.example`):
+Example `.env` (see `.env.example` for a clean template):
 
 ```env
 # OpenAI-compatible API key
@@ -125,8 +125,17 @@ OPENAI_API_KEY=your-api-key-here
 # Database file or URL (SQLite by default)
 DATABASE_URL=sqlite:///./app.db
 
-# Allowed CORS origins (frontend URL)
-CORS_ORIGINS=http://localhost:5173
+# Allowed CORS origins (comma-separated OR JSON list)
+# Both of these are valid:
+# CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
+# CORS_ORIGINS=["http://localhost:5173", "http://127.0.0.1:5173"]
+
+# LLM configuration
+LLM_MODEL=gpt-4o-mini
+LLM_TEMPERATURE=0.0
+
+# Debug mode (true/false)
+DEBUG=true
 ```
 
 ---
