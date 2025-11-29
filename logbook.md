@@ -234,3 +234,38 @@ In Step 29, we originally planned only UI/UX polish. While mapping out the event
     29b. Error-Recovery and Retry Handling
     29c. Add `event: alert` support
 30. Security hardening
+
+## 📅 Log Entry: November 29, 2025: step 14 Done
+
+**Step 14 – `/chat` SSE Endpoint Completed**
+
+We finished implementing the complete backend streaming system for the `/chat` endpoint. This included defining schemas, setting up in-memory session state, building a non-streaming handler, adding SSE utilities, wiring the FastAPI route, introducing realistic async token streaming, and adding minimal failure handling. We also debugged a Windows-specific Uvicorn reload issue where a stale import state caused `/health` to hang; forcing a clean reload resolved it. The final system now streams tokens asynchronously, logs failures, emits a controlled error event when issues occur, and always ends with `event: done`, ensuring the frontend closes connections reliably.
+
+All tests—curl, browser DevTools, and frontend UI—confirmed correct behavior in both normal and failure modes. This completes the backend foundation required before LLM integration and LangGraph logic.
+
+### New and Updated Files Added in Step 14
+
+```
+backend/
+  app/
+    routers/
+      chat.py                 # Defines the POST /chat SSE endpoint using StreamingResponse.
+    schemas/
+      chat.py                 # Pydantic models for ChatRequest, ChatStreamChunk, ChatFinalResponse.
+    services/
+      chat_service.py         # Core chat logic: stores messages, creates mock assistant reply, async mock streamer.
+    sse/
+      stream_utils.py         # SSE helper functions for formatting text events and done events.
+    state/
+      session_state.py        # In-memory session store with SessionState + global SESSIONS dict.
+```
+
+**What each does:**
+
+- **`routers/chat.py`** – Implements the `/chat` route. Wraps the async generator, streams tokens via SSE, handles errors, and sends `event: done` on all paths.
+- **`schemas/chat.py`** – Defines the request and response models used by `/chat`.
+- **`services/chat_service.py`** – Provides `handle_chat_message` (session updates + mock reply) and `mock_stream_reply` (async token generator with delays).
+- **`sse/stream_utils.py`** – Formats SSE messages (`event: text` and `event: done`) and provides basic text-stream helpers.
+- **`state/session_state.py`** – Stores conversation state in memory through `SessionState` and the global `SESSIONS` dictionary.
+
+Step 14 is complete.
