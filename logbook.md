@@ -269,3 +269,38 @@ backend/
 - **`state/session_state.py`** – Stores conversation state in memory through `SessionState` and the global `SESSIONS` dictionary.
 
 Step 14 is complete.
+
+### sub-steps for step 15. Next steps...
+
+15.1 Define Pydantic request/response models for `/summary`
+15.2 Create service function that assembles the summary (mock implementation for now)
+15.3 Implement POST `/summary` route in FastAPI
+15.4 Add backend-side validation and error handling
+15.5 Manually test the endpoint with curl/Postman
+
+## Log Entry: November 29, 2025: step 15 Done.
+
+**Step 15 – `/summary` JSON Endpoint Completed**
+
+We implemented the complete `/summary` endpoint as a non-streaming JSON API. This step established the contract for generating a finalized summary object that the frontend or other services can consume deterministically. The work included creating Pydantic models (`SummaryRequest`, `SummaryResponse`), adding a mock summary generator in `summary_service.py`, implementing the POST endpoint, adding validation and structured error handling, and wiring the router into the FastAPI application. Manual testing with curl confirmed correct status codes, request validation, and JSON responses. Unlike `/chat`, this endpoint intentionally does not stream output; summaries are treated as final artifacts rather than incremental token streams.
+
+### New and Updated Files Added in Step 15
+
+```
+backend/
+  app/
+    routers/
+      summary.py              # POST /summary endpoint with validation and JSON response.
+    schemas/
+      summary.py              # SummaryRequest and SummaryResponse Pydantic models.
+    services/
+      summary_service.py      # Mock summary generator built on session state.
+```
+
+**What each does:**
+
+- **`schemas/summary.py`** – Defines typed request/response models and ensures proper OpenAPI documentation.
+- **`services/summary_service.py`** – Produces a deterministic mock summary; will later delegate to an LLM.
+- **`routers/summary.py`** – Validates the request, handles errors, and returns a structured JSON `SummaryResponse`.
+
+Step 15 is complete.
