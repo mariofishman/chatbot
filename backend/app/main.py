@@ -7,6 +7,7 @@ from app.routers.health import router as health_router
 from app.routers.chat import router as chat_router
 from app.routers.summary import router as summary_router
 
+
 settings = Settings()
 
 app = FastAPI(title="Connective API", version="0.1.0")

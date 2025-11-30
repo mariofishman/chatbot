@@ -151,7 +151,7 @@ The backend now runs in development mode with hot reload, correctly handles CORS
 13.7 Add validation and defaults for missing variables
 13.8 Update README with environment variable instructions
 
-## 📅 Log Entry: November 23, 2025
+## 📅 Log Entry: November 23, 2025: step 13.
 
 **Step 13 – Pydantic Settings & Environment Management Completed**
 
@@ -278,7 +278,7 @@ Step 14 is complete.
 15.4 Add backend-side validation and error handling
 15.5 Manually test the endpoint with curl/Postman
 
-## Log Entry: November 29, 2025: step 15 Done.
+## 📅 Log Entry: November 29, 2025: step 15 Done.
 
 **Step 15 – `/summary` JSON Endpoint Completed**
 
@@ -304,3 +304,52 @@ backend/
 - **`routers/summary.py`** – Validates the request, handles errors, and returns a structured JSON `SummaryResponse`.
 
 Step 15 is complete.
+
+### sub-steps for step 16. Next steps...
+
+16.1 Add OpenAI-compatible client dependency
+16.2 Create `llm_client.py` module
+16.3 Load API key and model from Settings
+16.4 Implement a simple text completion function
+16.5 Implement a streaming completion function
+16.6 Add minimal error handling and logging
+
+changed Nov 30th:
+16.1 Confirm .env contains OPENAI_API_KEY, LLM_MODEL, and LLM_TEMPERATURE.
+16.2 Confirm settings.py correctly exposes these fields (openai_api_key, llm_model, llm_temperature).
+16.3 Install provider integration needed by LangChain (e.g. pip install langchain-openai).
+16.4 Create a minimal llm_provider.py that returns a configured LangChain model (but no logic, no streaming, no wrappers).
+16.5 Verify import works and the model can be instantiated (no call yet).
+
+## 📅 Log Entry: November 30, 2025: Step 16
+
+Today’s work centered on Step 16. The original plan for this step was based on outdated assumptions about LangChain’s capabilities. Initially, the roadmap treated Step 16 as the place to manually implement an OpenAI-compatible client, including custom completion and streaming functions. This was incorrect because LangChain (and LangGraph) now provide their own LLM wrappers, including built-in sync and async invocation, streaming, and handling of model configuration.
+
+Because of this, the earlier substeps for Step 16 were unnecessarily complex and duplicated functionality that LangChain already provides. After rechecking the latest LangChain and LangGraph documentation, we corrected the approach.
+
+### What was fixed
+
+1. Identified that manual client code was unnecessary and removed `llm_client.py`.
+2. Re-scoped Step 16 to its correct purpose: preparing the backend for Step 17 rather than implementing LLM calls.
+3. Created a minimal `llm_provider.py` containing only a `get_llm()` factory that returns a configured `ChatOpenAI` instance.
+4. Verified `.env` and `settings.py` contain the correct LLM fields.
+5. Installed `langchain-openai` as the proper integration layer.
+6. Ensured the factory imports cleanly and the backend boots without errors.
+
+### Final outcome for Step 16
+
+Step 16 is now lean and correct. It prepares all configuration needed for Step 17 without implementing any LLM logic or streaming itself. All actual LLM interaction, streaming, and orchestration will occur in Step 17 inside the LangGraph workflow.
+
+### sub-steps for step 17. Next steps...
+
+17.1 Install `langgraph` if not installed.
+17.2 Create `graph/` package in backend.
+17.3 Define Pydantic schemas for interview state (company profile fields).
+17.4 Create node: collect user message into state.
+17.5 Create node: decide next interview question.
+17.6 Create node: generate assistant reply using `get_llm()`.
+17.7 Create node: detect when interview is complete.
+17.8 Create node: generate final summary draft using `get_llm()`.
+17.9 Assemble all nodes into a LangGraph workflow with edges.
+17.10 Add streaming support using LangGraph’s streaming API.
+17.11 Write a small driver function to run the graph for `/chat` and `/summary`.
